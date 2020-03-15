@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 class UpDownSelector extends StatelessWidget {
 
+  final Function upPressed;
+  final Function downPressed;
+
+  UpDownSelector({this.upPressed, this.downPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -9,11 +13,11 @@ class UpDownSelector extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         FlatButton(
-          onPressed: null, 
+          onPressed: upPressed, 
           child: Icon(Icons.keyboard_arrow_up),
         ),
         FlatButton(
-          onPressed: null, 
+          onPressed: downPressed, 
           child: Icon(Icons.keyboard_arrow_down),
         )
       ],

@@ -8,11 +8,12 @@ enum SetterTypes {
 class TimeSetter extends StatelessWidget {
 
   final int type;
-  TimeSetter(this.type);
+  final String display;
+
+  TimeSetter({this.type, this.display});
   
   @override
   Widget build(BuildContext context) {
-    String text = type == SetterTypes.base.index ? "05:00" : "10";
     double width = type == SetterTypes.base.index ? 90 : 45;
     
     return Row(
@@ -26,7 +27,7 @@ class TimeSetter extends StatelessWidget {
           child: Card(
             elevation: 3,
             child: Text(
-              text,
+              display,
               style: TextStyle(
                 fontSize: 30,
               ),
