@@ -1,5 +1,3 @@
-import 'package:chess_clock/Common/classes/time-display.dart';
-import 'package:chess_clock/Settings/widget-selector/up-down-selector.dart';
 import 'package:flutter/material.dart';
 
 class TimeSelector extends StatefulWidget {
@@ -16,90 +14,101 @@ class TimeSelector extends StatefulWidget {
 class _TimeSelectorState extends State<TimeSelector> {
   double currentTime;
   double increments;
+
+  double currentTimeSlider;
+
+
+  
   String currentTimeText;
   String incrementText;
-
-  static const double maxIncrements = 90;
-  static const double maxCurrentTime = 5400;
 
   _TimeSelectorState({this.currentTime, this.increments});
 
   @override
   Widget build(BuildContext context) {
-    incrementText = TimeDisplay.incrementConverter(increments);
-    currentTimeText = TimeDisplay.timeConverter(currentTime);
+    currentTimeSlider = currentTime / 60;
+    currentTimeText = "Base Time: " + currentTimeSlider.toInt().toString() + " min(s)";
+    incrementText = "Increments: " + increments.toInt().toString() + " sec(s)"; 
     
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              UpDownSelector(
-                upPressed: () => adjustCurrentTime(60),
-                downPressed: () => adjustCurrentTime(-60),
-              ),
-              Container(
-                height: 80,
-                width: 130,
-                child: Card(
-                  elevation: 3,
-                  child: Text(
-                    currentTimeText,
-                    style: TextStyle(
-                      fontSize: 45,
-                    ),
-                  ),
-                ),
-              ),
-              UpDownSelector(
-                upPressed: () => adjustCurrentTime(1),
-                downPressed: () => adjustCurrentTime(-1),
-              )
-            ],
+          Text (
+            currentTimeText
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-               Container(
-                height: 60,
-                width: 60,
-                child: Card(
-                  elevation: 3,
-                  child: Text(
-                    incrementText,
-                    style: TextStyle(
-                      fontSize: 45,
-                    ),
+          Container(
+            padding: EdgeInsets.all(20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: Text("1")
+                ),
+                Expanded(
+                  flex: 8,
+                  child: Slider(
+                    min: 1.0,
+                    max: 90.0,
+                    value: currentTimeSlider,
+                    divisions: 89,
+                    onChanged: (double val) => adjustCurrentTime(val), 
                   ),
                 ),
-              ),
-              UpDownSelector(
-                upPressed: () => adjustIncrement(1),
-                downPressed: () => adjustIncrement(-1),
-              )
-            ],
+                Expanded(
+                  flex: 1,
+                  child: Text("90")
+                ),
+              ],
+            ),
+          ),
+
+          Text (
+            incrementText
+          ),
+          Container(
+            padding: EdgeInsets.all(20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: Text("0")
+                ),
+                Expanded(
+                  flex: 8,
+                  child: Slider(
+                    min: 0.0,
+                    max: 60.0,
+                    value: increments,
+                    divisions: 60,
+                    onChanged: (double val) => adjustIncrement(val), 
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Text("60")
+                ),
+              ],
+            ),
           )
         ],
       ),
     );
   }
 
-  adjustCurrentTime(int val) {
+  adjustCurrentTime(double val) {
     setState(() {
-      currentTime += val;
-      if (currentTime < 0 || currentTime > maxCurrentTime)
-        currentTime %= maxCurrentTime;
+      currentTimeSlider = val;
+      currentTime = (val * 60).roundToDouble();
     });
     widget.adjustTimeValues(currentTime, increments);
   }
 
-  adjustIncrement(int val) {
+  adjustIncrement(double val) {
     setState(() {
-      increments += val;
-      if (increments < 0 || increments > maxIncrements)
-        increments %= maxIncrements;
+      increments = val;
     });
     widget.adjustTimeValues(currentTime, increments);
   }

@@ -17,15 +17,13 @@ class TimeSetter extends StatelessWidget {
     double width = type == SetterTypes.base.index ? 90 : 45;
     
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Icon(
-          Icons.remove,
-        ),
         Container(
           height: 40,
           width: width,
           child: Card(
-            elevation: 3,
+            elevation: 0,
             child: Text(
               display,
               style: TextStyle(
@@ -33,9 +31,6 @@ class TimeSetter extends StatelessWidget {
               ),
             ),
           ),
-        ),
-        Icon(
-          Icons.add,
         ),
       ],
     );

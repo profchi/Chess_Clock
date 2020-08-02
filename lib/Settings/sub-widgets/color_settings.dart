@@ -42,7 +42,8 @@ class ColorSettings extends StatelessWidget {
 
   showColorSelector(BuildContext context) {
     showModalBottomSheet(
-      context: context, 
+      context: context,
+      useRootNavigator: true, 
       builder: (_) => ColorSelector(),
     );
   }

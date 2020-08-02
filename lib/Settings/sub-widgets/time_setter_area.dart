@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'time_setter.dart';
 import '../modals/time-selector.dart';
+import '../modals/standard-time-selector.dart';
 
 class TimeSetterArea extends StatefulWidget {
   @override
@@ -10,8 +11,8 @@ class TimeSetterArea extends StatefulWidget {
 }
 
 class _TimeSetterAreaState extends State<TimeSetterArea> {
-  final String base = 'Base Time';
-  final String increments = 'Increments';
+  final String base = 'Base(mins)';
+  final String increments = 'Inc(secs)';
 
   double currentTime;
   double increment;
@@ -28,35 +29,63 @@ class _TimeSetterAreaState extends State<TimeSetterArea> {
       children: <Widget>[
         Container(
           padding: EdgeInsets.all(20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(3),
-                child: Column(
-                  children: <Widget>[
-                    Text(base),
-                    TimeSetter(
-                      type: SetterTypes.base.index, 
-                      display: currentTimeText,
-                    )
-                  ],
+          child: RaisedButton(
+            onPressed:  () => showStandardTimeSelector(context),
+            elevation: 3,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: Container(),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  children: <Widget>[
-                    Text(increments),
-                    TimeSetter(
-                      type: SetterTypes.increments.index,
-                      display: incrementText,
-                    )
-                  ],
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    //padding: EdgeInsets.all(3),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(base),
+                        TimeSetter(
+                          type: SetterTypes.base.index, 
+                          display: currentTimeText,
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          )
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(increments),
+                        TimeSetter(
+                          type: SetterTypes.increments.index,
+                          display: incrementText,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded (
+                  flex: 1,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Container(
+                        child: Icon(
+                          Icons.arrow_drop_down
+                        ),
+                      ),
+                    ],
+                  )
+                )
+              ],
+            ),
+          ),
         ),
         RaisedButton(
           onPressed: () => showTimeSelector(context),
@@ -68,12 +97,29 @@ class _TimeSetterAreaState extends State<TimeSetterArea> {
 
   showTimeSelector(BuildContext context) {
    showModalBottomSheet(
-      context: context, 
+      context: context,
+      useRootNavigator: true, 
       builder: (context) => TimeSelector(
         currentTime: currentTime, 
         increments: increment, 
         adjustTimeValues: adjustTimeValues,),
     );
+  }
+
+  showStandardTimeSelector(BuildContext context) {
+   showModalBottomSheet(
+      context: context,
+      useRootNavigator: true, 
+      builder: (context) => StandardTimeSelector(changeStandardTime),
+    );
+  }
+
+  changeStandardTime( String val) {
+    var selectedTimes = val.split("|");
+    setState(() {
+      currentTime = double.parse(selectedTimes[0]) * 60;
+      increment =  double.parse(selectedTimes[1]);
+    });
   }
 
   adjustTimeValues (double curr, double inc ) {
