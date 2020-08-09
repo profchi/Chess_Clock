@@ -17,7 +17,13 @@ class StandardTimeSelector extends StatelessWidget {
       children: timeOptions.map((time) => 
         RaisedButton(
           onPressed: () => updateTime(time, context),
-          child: Text(time),
+          
+          child: Text(
+            time,
+            style: TextStyle(
+              fontSize: 20,
+            ),
+          ),
         )
       ).toList() ,
     );
