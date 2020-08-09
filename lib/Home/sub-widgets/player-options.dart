@@ -4,6 +4,11 @@ import '../sub-widgets/player-icon.dart';
 import '../../Settings/settings.dart';
 
 class PlayerOptions extends StatefulWidget {
+  final Function homePageWidgetClick;
+  final bool canPause;
+
+  PlayerOptions(this.homePageWidgetClick, this.canPause);
+
   @override
   _PlayerOptionsState createState() => _PlayerOptionsState();
 }
@@ -22,15 +27,12 @@ class _PlayerOptionsState extends State<PlayerOptions> {
             icon: Icons.refresh, 
             clickFunction: clickedReset,
           ),
-          !isPaused ?
+          widget.canPause?
           PlayerIcon(
             icon: Icons.pause, 
-            clickFunction: togglePlayPause,
-          ) :
-          PlayerIcon(
-            icon: Icons.play_arrow, 
-            clickFunction: togglePlayPause,
-          ),
+            clickFunction: clickedPause,
+          ) : 
+          Container(), 
           PlayerIcon(
             icon: Icons.settings, 
             clickFunction: clickedSettings,
@@ -40,12 +42,12 @@ class _PlayerOptionsState extends State<PlayerOptions> {
     );
   }
 
-  clickedReset() {}
+  clickedReset() {
+    widget.homePageWidgetClick(-1);
+  }
 
-  togglePlayPause() {
-    setState(() {
-      isPaused = !isPaused;
-    });
+  clickedPause() {
+    widget.homePageWidgetClick(0);
   }
 
 
@@ -54,5 +56,6 @@ class _PlayerOptionsState extends State<PlayerOptions> {
       context, 
       MaterialPageRoute(builder: (_) => SettingsPage()),
     );
+    widget.homePageWidgetClick(0);
   }
 }
