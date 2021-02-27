@@ -5,7 +5,7 @@ import './Settings/settings.dart';
 void main() =>
     runApp(MaterialApp(home: MyApp(), routes: <String, WidgetBuilder>{
       '/home': (BuildContext context) => HomePage(),
-      '/settings': (BuildContext context) => SettingsPage()
+      '/settings': (BuildContext context) => SettingsPage(null, null, null)
     }));
 
 class MyApp extends StatelessWidget {

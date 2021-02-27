@@ -11,7 +11,7 @@ class PlayerIcon extends StatelessWidget {
     return FlatButton(
       child: Icon(
         this.icon,
-        color: Colors.redAccent,
+        color: Colors.blue,
         size: 36.0,
       ),
       onPressed: clickFunction,

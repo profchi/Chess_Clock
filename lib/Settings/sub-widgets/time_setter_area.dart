@@ -1,3 +1,4 @@
+import 'package:chess_clock/Common/classes/state.dart';
 import 'package:chess_clock/Common/classes/time-display.dart';
 import 'package:flutter/material.dart';
 
@@ -6,8 +7,10 @@ import '../modals/time-selector.dart';
 import '../modals/standard-time-selector.dart';
 
 class TimeSetterArea extends StatefulWidget {
+  final AppState state;
+  TimeSetterArea (this.state); 
   @override
-  _TimeSetterAreaState createState() => _TimeSetterAreaState(currentTime: 300, increment: 5);
+  _TimeSetterAreaState createState() => _TimeSetterAreaState(state.defaultTime, state.increments);
 }
 
 class _TimeSetterAreaState extends State<TimeSetterArea> {
@@ -17,7 +20,7 @@ class _TimeSetterAreaState extends State<TimeSetterArea> {
   double currentTime;
   double increment;
 
-  _TimeSetterAreaState({this.currentTime, this.increment});
+  _TimeSetterAreaState(this.currentTime, this.increment);
 
   @override
   Widget build(BuildContext context) {
@@ -120,9 +123,13 @@ class _TimeSetterAreaState extends State<TimeSetterArea> {
       currentTime = double.parse(selectedTimes[0]) * 60;
       increment =  double.parse(selectedTimes[1]);
     });
+    widget.state.defaultTime = currentTime;
+    widget.state.increments = increment;
   }
 
   adjustTimeValues (double curr, double inc ) {
+    widget.state.defaultTime = curr;
+    widget.state.increments = inc;
     setState(() {
       currentTime = curr;
       increment = inc;
